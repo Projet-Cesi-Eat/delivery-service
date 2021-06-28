@@ -2,27 +2,66 @@ import deliveryModel, { DeliveriesInterface } from '../schema/deliverySchema';
 
 export class DeliveriesServices {
   /**
-   * GET all deliveries ✅
+   * GET all deliveries for carrier ✅
    */
-  public getAllDeliveries<DeliveriesInterface>() {
+  public getAllCarrierDeliveries<DeliveriesInterface>(carrierId: any) {
     return new Promise<DeliveriesInterface>((resolve, reject) => {
-      deliveryModel.find((err: Error, deliveries: DeliveriesInterface) => {
-        if (err) {
-          reject(err);
-        } else {
-          resolve(deliveries);
+      deliveryModel.find(
+        { carrierId: carrierId },
+        (err: Error, deliveries: DeliveriesInterface) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(deliveries);
+          }
         }
-      });
+      );
     });
   }
 
   /**
-   * GET one delivery ✅
+   * GET one delivery for carrier ✅
    */
-  public getOneDelivery<DeliveriesInterface>(id: any) {
+  public getOneCarrierDelivery<DeliveriesInterface>(id: any, carrierId: any) {
     return new Promise<DeliveriesInterface>((resolve, reject) => {
-      deliveryModel.findById(
-        id,
+      deliveryModel.findOne(
+        { _id: id, carrierId: carrierId },
+        (err: Error, deliveries: DeliveriesInterface) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(deliveries);
+          }
+        }
+      );
+    });
+  }
+
+  /**
+   * GET all deliveries for user ✅
+   */
+  public getAllClientDeliveries<DeliveriesInterface>(clientId: any) {
+    return new Promise<DeliveriesInterface>((resolve, reject) => {
+      deliveryModel.find(
+        { clientId: clientId },
+        (err: Error, deliveries: DeliveriesInterface) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(deliveries);
+          }
+        }
+      );
+    });
+  }
+
+  /**
+   * GET one delivery for user ✅
+   */
+  public getOneClientDelivery<DeliveriesInterface>(id: any, clientId: any) {
+    return new Promise<DeliveriesInterface>((resolve, reject) => {
+      deliveryModel.findOne(
+        { _id: id, clientId: clientId },
         (err: Error, deliveries: DeliveriesInterface) => {
           if (err) {
             reject(err);
@@ -57,7 +96,7 @@ export class DeliveriesServices {
   }
 
   /**
-   * DELETE one delivery
+   * DELETE one delivery ✅
    */
   public deleteOneDelivery<DeliveriesInterface>(id: any) {
     return new Promise<DeliveriesInterface>((resolve, reject) => {

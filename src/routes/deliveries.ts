@@ -6,22 +6,47 @@ const router = express.Router();
 const services = new DeliveriesServices();
 
 /**
- * GET all delivery ✅
+ * GET all delivery for carrier ✅
  */
-router.get('/all/', function (req: Request, res: Response) {
+router.get('/carrierAll/', function (req: Request, res: Response) {
+  const carrierId = req.query.carrierId;
   services
-    .getAllDeliveries()
+    .getAllCarrierDeliveries(carrierId)
     .then((deliveries) => res.status(200).json({ deliveries }))
     .catch((error) => res.status(400).json({ error }));
 });
 
 /**
- * GET one delivery ✅
+ * GET one delivery for carrier ✅
  */
-router.get('/one/', (req: Request, res: Response) => {
+router.get('/carrierOne/', (req: Request, res: Response) => {
   const id = req.query.id;
+  const carrierId = req.query.carrierId;
   services
-    .getOneDelivery(id)
+    .getOneCarrierDelivery(id, carrierId)
+    .then((delivery) => res.status(200).json({ delivery: delivery }))
+    .catch((error) => res.status(400).json({ error }));
+});
+
+/**
+ * GET all delivery for user ✅
+ */
+router.get('/clientAll/', function (req: Request, res: Response) {
+  const clientId = req.query.clientId;
+  services
+    .getAllClientDeliveries(clientId)
+    .then((deliveries) => res.status(200).json({ deliveries }))
+    .catch((error) => res.status(400).json({ error }));
+});
+
+/**
+ * GET one delivery for user ✅
+ */
+router.get('/clientOne/', (req: Request, res: Response) => {
+  const id = req.query.id;
+  const clientId = req.query.clientId;
+  services
+    .getOneClientDelivery(id, clientId)
     .then((delivery) => res.status(200).json({ delivery: delivery }))
     .catch((error) => res.status(400).json({ error }));
 });
